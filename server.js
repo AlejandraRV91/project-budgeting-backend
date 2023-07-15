@@ -33,13 +33,16 @@ let transactions = [
 
 // Create
 app.post("/transactions", (req, res) => {
-	const { item_name, amount, date, from, category } = req.body;
+	let { id, item_name, amount, date, from, category } = req.body;
+
+	if (!id) {
+		id = Date.now();
+	}
 
 	if (!item_name || !amount || !date || !from || !category) {
 		return res.status(400).json({ error: "Missing required fields" });
 	}
 
-	const id = Date.now();
 	const newTransaction = { id, item_name, amount, date, from, category };
 	transactions.push(newTransaction);
 	res.sendStatus(201);
