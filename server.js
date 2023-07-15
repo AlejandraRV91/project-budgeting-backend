@@ -59,6 +59,35 @@ app.use((req, res) => {
 	res.sendStatus(404);
 });
 
+//update
+app.put("/transactions/:id", (req, res) => {
+	const { id } = req.params;
+	const { item_name, amount, date, from, category } = req.body;
+	const transaction = transactions.find((t) => t.id === Number(id));
+	if (!transaction) {
+		res.sendStatus(404);
+	} else {
+		transaction.item_name = item_name;
+		transaction.amount = amount;
+		transaction.date = date;
+		transaction.from = from;
+		transaction.category = category;
+		res.sendStatus(200);
+	}
+});
+
+//delete
+app.delete("/transactions/:id", (req, res) => {
+	const { id } = req.params;
+	const transactionIndex = transactions.findIndex((t) => t.id === Number(id));
+	if (transactionIndex === -1) {
+		res.sendStatus(404);
+	} else {
+		transactions.splice(transactionIndex, 1);
+		res.sendStatus(200);
+	}
+});
+
 app.listen(port, () => {
 	console.log("The server is running on the port " + port);
 });
