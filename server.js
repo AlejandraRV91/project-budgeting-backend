@@ -37,6 +37,10 @@ app.post("/transactions", (req, res) => {
 
 	if (!id) {
 		id = Date.now();
+	} else {
+		if (transactions.find((t) => t.id === Number(id))) {
+			return res.status(400).json({ error: "That id is already in use" });
+		}
 	}
 
 	if (!item_name || !amount || !date || !from || !category) {
